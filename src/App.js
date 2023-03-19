@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+import { persons } from "./config/mock.persons";
+
+import { searchPerson } from "./utils/searchPerson";
+
+import "./App.css";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input
+        value={searchTerm}
+        placeholder="საძიებო სიტყვა"
+        onChange={(event) => setSearchTerm(event.target.value)}
+      />
+
+      <h1>Searched Items</h1>
+      <ul>
+        {persons?.map((person) => {
+          if (searchTerm === "") {
+            return;
+          }
+          if (searchPerson(person.name, searchTerm)) {
+            return (
+              <li key={person.name}>
+                {person.name}
+                <br />
+                {person.city}
+                <br />
+                {person.age}
+              </li>
+            );
+          }
+        })}
+      </ul>
     </div>
   );
 }
